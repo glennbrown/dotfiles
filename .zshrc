@@ -17,7 +17,7 @@ zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
 #autoload -Uz compinit && compinit
 
 # oh-my-zsh plugins
-plugins=(macos git command-not-found brew aliases 1password iterm2 tmux zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search)
+plugins=(macos command-not-found brew aliases 1password iterm2 tmux)
 
 # Command completion
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
@@ -27,9 +27,12 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # Allow history search via up/down keys.
+source ${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 bindkey "^[[A" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
 
+# Autosuggestions
+source ${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
