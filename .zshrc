@@ -77,4 +77,7 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 # Tell homebrew to not autoupdate every single time I run it (just once a week).
 export HOMEBREW_AUTO_UPDATE_SECS=604800
 
+# Opt out of Homebrew Analytics
+export HOMEBREW_NO_ANALYTICS=1
+
 export PATH=~/Library/Python/3.9/bin:$PATH
