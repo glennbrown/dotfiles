@@ -53,8 +53,7 @@ alias gcam='git commit -am'
 alias gl='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
 
 # Include alias file (if present) containing aliases for ssh, etc.
-if [ -f ~/.aliases ]
-then
+if [ -f ~/.aliases ]; then
   source ~/.aliases
 fi
 
@@ -67,6 +66,11 @@ knownrm() {
    sed -i '' "$1d" ~/.ssh/known_hosts
  fi
 }
+
+#Bitwarden Session Token
+if [ -f ~/tmp/bw.token ]; then
+export BW_SESSION=$(cat ~/tmp/bw.token)
+fi
 
 #1password SSH Agent
 export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
