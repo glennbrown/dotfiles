@@ -87,4 +87,4 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 # Opt out of Homebrew Analytics
 export HOMEBREW_NO_ANALYTICS=1
 
-export PATH=~/Library/Python/3.9/bin:$PATH
+#export PATH=~/Library/Python/3.9/bin:$PATH
