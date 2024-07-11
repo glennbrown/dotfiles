@@ -83,6 +83,3 @@ export HOMEBREW_NO_ANALYTICS=1
 
 # iTerm Shell Integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# Python 3.11
-export PATH="${HOME}/Library/Python/3.11/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
