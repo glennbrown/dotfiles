@@ -83,3 +83,6 @@ export HOMEBREW_NO_ANALYTICS=1
 
 # iTerm Shell Integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Atuin
+eval "$(atuin init zsh)"
