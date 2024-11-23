@@ -11,13 +11,13 @@ export ZSH="/Users/gbrown/.oh-my-zsh"
 ZSH_THEME="gentoo"
 
 # SSH Agent config
-zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
+#zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
 
 #Terminal autocomplete fix
 #autoload -Uz compinit && compinit
 
 # oh-my-zsh plugins
-plugins=(macos command-not-found brew aliases 1password iterm2 tmux)
+plugins=(macos command-not-found brew aliases 1password iterm2 tmux fzf zoxide)
 
 # Command completion
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
