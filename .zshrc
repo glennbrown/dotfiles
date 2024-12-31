@@ -13,11 +13,14 @@ ZSH_THEME="gentoo"
 # SSH Agent config
 #zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
 
+# iTerm2 Plugin config
+zstyle :omz:plugins:iterm2 shell-integration yes
+
 #Terminal autocomplete fix
 #autoload -Uz compinit && compinit
 
 # oh-my-zsh plugins
-plugins=(macos command-not-found brew aliases 1password iterm2 tmux fzf zoxide)
+plugins=(macos command-not-found brew aliases 1password iterm2 tmux fzf zoxide docker)
 
 # Command completion
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
@@ -82,7 +85,7 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 export HOMEBREW_NO_ANALYTICS=1
 
 # iTerm Shell Integration
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # Atuin
 eval "$(atuin init zsh)"
