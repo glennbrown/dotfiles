@@ -1,3 +1,6 @@
 [submodule "zsh/plugins/zsh-window-title"]
 	path = zsh/plugins/zsh-window-title
 	url = https://github.com/olets/zsh-window-title.git
+[submodule "zsh/plugins/zsh-autosuggestions"]
+	path = zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
