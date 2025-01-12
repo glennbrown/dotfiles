@@ -11,6 +11,7 @@ format = """
 $username\
 $hostname\
 $directory\
+$python\
 $git_branch\
 $git_commit\
 $git_state\
@@ -27,8 +28,8 @@ $character"""
 style = "bold orange"
 
 [character]
-error_symbol = "[>](bold red)"
-success_symbol = "[>](bold green)"
+error_symbol = "[\\$](bold red)"
+success_symbol = "[\\$](bold green)"
 
 # Define Dracula color palette
 [palettes.dracula]
@@ -63,6 +64,12 @@ style = "bold purple"
 ssh_only = false
 
 [username]
-format = "[$user]($style) on "
+format = "[$user]($style) @ "
 style_user = "bold cyan"
 show_always = true
+
+[time]
+disabled = false
+format = '[\[$time\]]($style) '
+time_format = '%T'
+utc_time_offset = '-5'
