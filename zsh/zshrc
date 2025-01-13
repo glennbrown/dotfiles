@@ -30,6 +30,9 @@ setopt COMPLETE_IN_WORD
 # Aliases
 source $DOTFILES/aliases/aliases
 
+# NVM
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 # Command Completion
 source $DOTFILES/zsh/completion.zsh
 

@@ -52,11 +52,14 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 # Opt out of Homebrew Analytics
 export HOMEBREW_NO_ANALYTICS=1
 
-#1Password SSH Agent
+# 1Password SSH Agent
 export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 
 # Python Fix
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-#Surpress Node Warnings
+# Surpress Node Warnings
 export NODE_NO_WARNINGS=1
+
+# Node Version Manager
+export NVM_DIR="$HOME/.nvm"
