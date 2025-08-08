@@ -1,20 +1,11 @@
-#!/usr/bin/env zsh
-
 ###############################
 # EXPORT ENVIRONMENT VARIABLE #
 ###############################
 
-export TERM='xterm-256color'
-export DOTFILES="$HOME/dotfiles"
+# Terminal
+export TERM=xterm-256color
 
-# GNU ls Colors
-export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
-# BSD ls Colors
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
-export CLICOLOR=1
-export CLICOLOR_FORCE=1
-
-# zsh
+# History
 export HISTSIZE=50000
 export SAVEHIST=50000
 export HISTFILE=$HOME/.zsh_history
@@ -36,7 +27,7 @@ marker:blue,\
 prompt:gray,\
 hl+:red"
 
-export FZF_DEFAULT_OPTS="--height 60% \
+export FZF_DEFAULT_OPTS="--height 70% \
 --border sharp \
 --layout reverse \
 --color '$FZF_COLORS' \
@@ -53,13 +44,10 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 export HOMEBREW_NO_ANALYTICS=1
 
 # 1Password SSH Agent
-export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+export SSH_AUTH_SOCK="~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # Python Fix
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Surpress Node Warnings
 export NODE_NO_WARNINGS=1
-
-# Node Version Manager
-export NVM_DIR="$HOME/.nvm"

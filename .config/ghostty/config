@@ -1,0 +1,26 @@
+# Theme
+theme = "dracula"
+cursor-style = block
+cursor-opacity = 0.3
+cursor-style-blink = false
+
+# Font Settings
+font-family = "MesloLGS Nerd Font Mono"
+font-size = 14
+font-thicken = true
+
+# Window settings
+window-height = 50
+window-width = 150
+
+# Miscellanous
+shell-integration = detect
+shell-integration-features = sudo,no-cursor,no-title
+macos-titlebar-style = tabs
+macos-auto-secure-input = true
+macos-secure-input-indication = true
+window-save-state = always
+link-url = true
+scrollback-limit = 50000
+auto-update = download
+auto-update-channel = stable

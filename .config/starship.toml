@@ -8,6 +8,7 @@ palette = "dracula"
 add_newline = true
 
 format = """
+$os\
 $username\
 $hostname\
 $directory\
@@ -27,9 +28,9 @@ $character"""
 [aws]
 style = "bold orange"
 
-[character]
-error_symbol = "[\\$](bold red)"
-success_symbol = "[\\$](bold green)"
+#[character]
+#error_symbol = "[\\$](bold red)"
+#success_symbol = "[\\$](bold green)"
 
 # Define Dracula color palette
 [palettes.dracula]

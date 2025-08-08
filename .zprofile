@@ -1,4 +1,2 @@
-#!/usr/bin/env zsh
-
 # Load Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
