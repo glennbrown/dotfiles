@@ -17,18 +17,22 @@ ZSH_THEME=""
 # zstyle :omz:plugins:iterm2 shell-integration yes
 
 # oh-my-zsh plugins
-plugins=(1password aliases brew command-not-found docker fzf macos nvm tmux zoxide zsh-autosuggestions zsh-history-substring-search)
+plugins=(1password aliases brew command-not-found docker fzf macos nvm tmux zoxide)
 
 # Command completion
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+fpath+=$(brew --prefix)/share/zsh-completions
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
 # Allow history search via up/down keys.
+source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 bindkey "^[[A" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
+
+# Autosuggestions
+source ${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
