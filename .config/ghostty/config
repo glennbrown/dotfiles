@@ -1,5 +1,5 @@
 # Theme
-theme = "dracula"
+theme = "catppuccin-mocha"
 cursor-style = block
 cursor-opacity = 0.3
 cursor-style-blink = false

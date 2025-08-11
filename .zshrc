@@ -4,14 +4,15 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME=""
+# Set oh-my-zsh theme when startship is not installed
+if [ ! -x "$(command -v starship)" ]; then
+  export ZSH_THEME="gentoo"
+else
+  export ZSH_THEME=""
+fi
 
 # SSH Agent config
-#zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
+# zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
 
 # iTerm2 Plugin config
 # zstyle :omz:plugins:iterm2 shell-integration yes
@@ -41,9 +42,6 @@ else
   export EDITOR='code'
 fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
 # Include alias file (if present) containing aliases for ssh, etc.
 test -e ${HOME}/.aliases && source ~/.aliases
 
@@ -58,4 +56,4 @@ knownrm() {
 }
 
 # Starship Prompt
-eval "$(starship init zsh)"
+test -e $(command -v starship) && eval "$(starship init zsh)"
