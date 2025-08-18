@@ -65,7 +65,7 @@ format = '[ $user]($style)'
 ssh_only = false
 style = "bg:red fg:crust"
 format = '[@$hostname ]($style)'
-disable = false
+disabled = false
 
 [directory]
 style = "bg:peach fg:crust"
