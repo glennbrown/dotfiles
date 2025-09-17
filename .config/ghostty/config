@@ -1,26 +1,27 @@
-# Theme
-theme = "catppuccin-mocha"
-cursor-style = block
-cursor-opacity = 0.3
-cursor-style-blink = false
+theme = nord
 
-# Font Settings
 font-family = "MesloLGS Nerd Font Mono"
 font-size = 14
-font-thicken = true
 
-# Window settings
 window-height = 50
 window-width = 150
-
-# Miscellanous
-shell-integration = detect
-shell-integration-features = sudo,no-cursor,no-title
-macos-titlebar-style = tabs
-macos-auto-secure-input = true
-macos-secure-input-indication = true
 window-save-state = always
+window-padding-x = 6
+window-padding-y = 6
+window-padding-balance = true
+
+shell-integration = detect
+shell-integration-features = sudo,cursor,title,ssh-env,ssh-terminfo
+
+# MacOS
+macos-titlebar-style = native
+macos-auto-secure-input = true
+macos-option-as-alt = true
+quit-after-last-window-closed = true
+
 link-url = true
 scrollback-limit = 50000
+
+# Updates
 auto-update = download
 auto-update-channel = stable
