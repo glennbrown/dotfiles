@@ -1,6 +1,6 @@
-theme = nord
+theme = Nord
 
-font-family = "MesloLGS Nerd Font Mono"
+font-family = JetBrainsMono Nerd Font Mono
 font-size = 14
 
 window-height = 50
@@ -11,7 +11,7 @@ window-padding-y = 6
 window-padding-balance = true
 
 shell-integration = detect
-shell-integration-features = sudo,cursor,title,ssh-env,ssh-terminfo
+shell-integration-features = sudo,cursor,title,ssh-env
 
 # MacOS
 macos-titlebar-style = native
