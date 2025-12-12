@@ -4,6 +4,9 @@
 # Terminal
 export TERM=xterm-256color
 
+# Set PATH
+export PATH="$HOME/.rd/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+
 # Homebrew Settings
 export HOMEBREW_AUTO_UPDATE_SECS=604800 #Update homebrew once a week
 export HOMEBREW_NO_ANALYTICS=1 #Disable homebrew analytics
@@ -27,12 +30,24 @@ else
 fi
 
 # oh-my-zsh plugins
-plugins=(1password aliases brew)
+#plugins=(1password aliases)
 
 # Command completion
 fpath+=$(brew --prefix)/share/zsh-completions
 
-source $ZSH/oh-my-zsh.sh
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-.]=** r:|=**'
+zstyle ':completion:*' max-errors 2 numeric
+zstyle ':completion:*' menu select=5
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle :compinstall filename '/Users/gbrown/.zshrc'
+
+autoload -Uz compinit
+compinit
+
+#source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -106,6 +121,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Surpress Node Warnings
 export NODE_NO_WARNINGS=1
+
+# Dircolors
+test -r ~/.dir_colors && eval $(gdircolors ~/.dir_colors)
 
 # Set zoxide
 eval "$(zoxide init zsh)"
