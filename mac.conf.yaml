@@ -16,8 +16,7 @@
 
 - shell:
     - description: "Run homebrew"
-      command: |
-        cd ~ && brew bundle
+      command: "brew bundle"
     - description: "Configuring Dock"
       command: |
         ~/bin/dock_manager.sh
