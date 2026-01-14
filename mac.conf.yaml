@@ -1,11 +1,13 @@
 - plugins:
     - dotbot-plugins/dotbot-brew/
-    
+
 - defaults:
-    link:
-      relink: true
-      force: true
-      create: true
+    - link:
+        relink: true
+        force: true
+        create: true
+    - brewfile:
+      - stdout: true
 
 - link:
     ~/.Brewfile:
@@ -23,7 +25,7 @@
 - brewfile:
     - ~/.Brewfile
 
-- shell:
+# - shell:
     # - ~/bin/dock_manager.sh
     #- command: |
     #    if [ "$(hostname -s)" = "Glenns-Laptop" ]; then
