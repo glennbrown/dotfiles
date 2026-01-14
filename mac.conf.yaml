@@ -13,20 +13,16 @@
     ~/.Brewfile:
       if: '[ "$(hostname -s)" = "thor" ]'
       path: brewfiles/Brewfile.server
+    ~/.dock-config.yaml:
+      if: '[ "$(hostname -s)" = "thor" ]'
+      path: mac/dock/server.yaml
 
 - shell:
-    - description: "Run homebrew"
-      command: "brew bundle"
-    - description: "Configuring Dock"
-      command: |
-        ~/bin/dock_manager.sh
-    - description: Run hostname-specific defaults
-      command: |
+    - brew bundle
+    - ~/bin/dock_manager.sh
+    - command: |
         if [ "$(hostname -s)" = "Glenns-Laptop" ]; then
           ~/bin/macos-laptop-defaults.sh
         elif [ "$(hostname -s)" = "thor" ]; then
           ~/bin/macos-server-defaults.sh
         fi
-      stdin: true
-      stdout: true
-      stderr: true
