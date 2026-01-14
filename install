@@ -11,7 +11,7 @@ case "$(uname -s)" in
         ;;
 esac
 
-CONFIGS+=("post.conf.yaml")
+#CONFIGS+=("post.conf.yaml")
 
 DOTBOT_DIR="dotbot"
 DOTBOT_BIN="bin/dotbot"
