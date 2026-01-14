@@ -53,8 +53,8 @@ else
 fi
 
 # Parse YAML config file
-ITEMS_TO_REMOVE=$(yq eval '.dockitems_remove[]? // empty' "$CONFIG_FILE")
-ITEMS_TO_ADD=$(yq eval -o=json '.dockitems_persist[]? // empty' "$CONFIG_FILE")
+ITEMS_TO_REMOVE=$(yq eval '.dockitems_remove[]?' "$CONFIG_FILE" 2>/dev/null || echo "")
+ITEMS_TO_ADD=$(yq eval -o=json '.dockitems_persist[]?' "$CONFIG_FILE" 2>/dev/null || echo "")
 
 # Remove configured Dock items
 echo ""
