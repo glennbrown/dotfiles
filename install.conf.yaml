@@ -1,0 +1,21 @@
+---
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- link:
+    ~/.aliases: .aliases
+    ~/.bash_profile: .bash_profile
+    ~/.bashrc: .bashrc
+    ~/.dir_colors: .dir_colors
+    ~/.inputrc: .inputrc
+    ~/.vimrc: .vimrc
+    ~/.zprofile: .zprofile
+    ~/.zshrc: .zshrc
+    ~/.config/ghostty: .config/ghostty
+    ~/.config/starship.toml: .config/starship.toml
+    ~/bin/:
+      glob: true
+      path: bin/*.sh

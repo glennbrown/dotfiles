@@ -1,0 +1,141 @@
+# Taps
+tap "glennbrown/tap"
+tap "oven-sh/bun"
+tap "teamookla/speedtest"
+tap "valkyrie00/bbrew"
+
+# Brew packages
+brew "bash"
+brew "bash-completion@2"
+brew "bbrew"
+brew "btop"
+brew "bun"
+brew "cdrtools"
+brew "certbot"
+brew "colima"
+brew "coreutils"
+brew "cpio"
+brew "ctop"
+brew "diceware"
+brew "diffutils"
+brew "docker"
+brew "docker-buildx"
+brew "docker-completion"
+brew "docker-compose"
+brew "docker-credential-helper"
+brew "dockutil"
+brew "fastfetch"
+brew "figurine"
+brew "findutils"
+brew "fio"
+brew "ffmpeg"
+brew "flac"
+brew "gawk"
+brew "gcc"
+brew "gh"
+brew "gnu-sed"
+brew "gnu-tar"
+brew "go"
+brew "grep"
+brew "htop"
+brew "imagemagick"
+brew "inxi"
+brew "iperf3"
+brew "jq"
+brew "just"
+brew "lame"
+brew "lesspipe"
+brew "lima-additional-guestagents"
+brew "lz4"
+brew "lzo"
+brew "macmon"
+brew "mactop"
+brew "media-info"
+brew "nano"
+brew "nanorc"
+brew "ncurses"
+brew "neofetch"
+brew "nmap"
+brew "perl"
+brew "php"
+brew "pipx"
+brew "pv"
+brew "python@3.12"
+brew "python@3.13"
+brew "python@3.14"
+brew "qemu"
+brew "ruby"
+brew "screenresolution"
+brew "smartmontools"
+brew "snappy"
+brew "socat"
+brew "sqlite"
+brew "sshpass"
+brew "svt-av1"
+brew "teamookla/speedtest/speedtest"
+brew "tmux"
+brew "usbutils"
+brew "webp"
+brew "wget"
+brew "when"
+brew "x264"
+brew "x265"
+brew "xvid"
+brew "xz"
+brew "yt-dlp"
+brew "zsh-autosuggestions"
+brew "zsh-completions", args: ["--HEAD"]
+brew "zsh-history-substring-search"
+brew "zstd"
+
+# Rust Tools
+brew "diffr" # Modern diff
+brew "difftastic" # Modern diff
+brew "dua-cli" # Modern du
+brew "duf" # Modern Unix df
+brew "dust" # Modern du
+brew "eza" # ls replacement
+brew "fd" # Find replacement
+brew "fzf" # Fuzzy finder
+brew "lsd " # ls replacement
+brew "procs" # Rust replacement for ps
+brew "just" # Command runner
+brew "ripgrep" # Fast grep
+brew "starship" # Prompt bling
+brew "tealdeer" # Rust re-write of tldr which are community based manpages
+brew "uutils-diffutils" # Cross-platform GNU diffutils rewrite
+brew "uutils-findutils" # Cross-platform GNU findutils rewrite
+brew "uv" # Pip/virtualenv replacement
+brew "zoxide" # Smart cd replacement
+
+# Casks
+cask "1password"
+cask "1password-cli"
+cask "automounterhelper"
+cask "bbedit"
+cask "font-jetbrains-mono"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"
+cask "ghostty"
+cask "google-chrome"
+cask "grandperspective"
+cask "hazel"
+cask "keka"
+cask "kekaexternalhelper"
+cask "mamp"
+cask "plex-media-server"
+cask "sabnzbd"
+cask "timemachineeditor"
+cask "transmission"
+cask "utm"
+cask "visual-studio-code"
+cask "vlc"
+
+# Mac App Store
+mas "1Password for Safari", id: 1569813296
+mas "AmorphousDiskMark", id: 1168254295
+mas "AutoMounter", id: 1160435653
+mas "Hyperspace", id: 6739505345
+mas "MediaInfo", id: 510620098
+mas "Text Case", id: 1492174677
+mas "Wipr", id: 1662217862

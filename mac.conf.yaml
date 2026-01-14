@@ -1,0 +1,31 @@
+- defaults:
+    link:
+      relink: true
+      force: true
+      create: true
+
+- link:
+    ~/.Brewfile:
+      if: '[ "$(hostname -s)" = "Glenns-Laptop" ]'
+      path: brewfiles/Brewfile.laptop
+
+- link:
+    ~/.Brewfile:
+      if: '[ "$(hostname -s)" = "thor" ]'
+      path: brewfiles/Brewfile.server
+
+- shell:
+    - description: "Run homebrew"
+      command: brew bundle
+    - description: "Configuring Dock"
+      command: ${HOME}/bin/dock_manager.sh
+    - description: Run hostname-specific defaults
+      command: |
+        if [ "$(hostname -s)" = "Glenns-Laptop" ]; then
+          ${HOME}/bin/mac-laptop-defaults.sh
+        elif [ "$(hostname -s)" = "thor" ]; then
+          ${HOME}/bin/mac-server-defaults.sh
+        fi
+      stdin: true
+      stdout: true
+      stderr: true

@@ -110,6 +110,9 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # Disable warning when changing a file extension
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool true
 
+# Clicking wallpaper on only shows desktop when in Stage Manager
+defaults write com.apple.WindowManager -bool false
+
 # Enable spring loading for directories
 defaults write NSGlobalDomain com.apple.springing.enabled -bool true
 
@@ -130,7 +133,7 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 echo "Configuring Dock..."
 
 # Set icon size of Dock items
-defaults write com.apple.dock tilesize -int 42
+defaults write com.apple.dock tilesize -int 36
 
 # Make Dock icons of hidden applications translucent
 defaults write com.apple.dock showhidden -bool true
