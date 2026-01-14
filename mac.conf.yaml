@@ -16,9 +16,11 @@
 
 - shell:
     - description: "Run homebrew"
-      command: "cd $HOME && brew bundle"
+      command: |
+        cd $HOME && brew bundle
     - description: "Configuring Dock"
-      command: "$HOME/bin/dock_manager.sh"
+      command: |
+        $HOME/bin/dock_manager.sh
     - description: Run hostname-specific defaults
       command: |
         if [ "$(hostname -s)" = "Glenns-Laptop" ]; then
