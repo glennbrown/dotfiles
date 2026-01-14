@@ -17,8 +17,10 @@
       if: '[ "$(hostname -s)" = "thor" ]'
       path: mac/dock/server.yaml
 
+- brewfile:
+    - ~/.Brewfile
+
 - shell:
-    - brew bundle
     - ~/bin/dock_manager.sh
     - command: |
         if [ "$(hostname -s)" = "Glenns-Laptop" ]; then
