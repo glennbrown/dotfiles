@@ -119,15 +119,15 @@ defaults write com.apple.dock minimize-to-application -bool true
 
 # Safari & Webkit
 # Enable the Develop menu and the Web Inspector in Safari
-defaults write com.apple.safari IncludeDevelopMenu -bool true
-defaults write com.apple.safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
 
 # Add a context menu item for showing the Web Inspector in web views
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
 # Show Full URL in Address Bar
-defaults write com.apple.safari ShowFullURLInSmartSearchField -bool true
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
 # Activity Monitor
 # Show the main window when launching Activity Monitor
@@ -138,7 +138,7 @@ defaults write com.apple.ActivityMonitor ShowCategory -int 0
 
 # App Store
 # Disable in-app rating requests from apps downloaded from the App Store.
-defaults write com.apple.appstore InAppReviewEnabled -int 0
+defaults write com.apple.AppStore InAppReviewEnabled -int 0
 
 # Time Machine
 # Don't offer new disks for Time Machine backup
@@ -147,10 +147,15 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 echo "Done! Restarting affected services..."
 
 # Restart services to apply changes
-killall Dock
-killall Finder
-killall SystemUIServer
-killall WindowManager
+for app in "Activity Monitor" \
+    "Dock" \
+    "Finder" \
+    "Mail" \
+    "Safari" \
+    "SystemUIServer" \
+    "WindowManager"; do
+    killall "${app}" &> /dev/null || true
+done
 
 echo "macOS defaults have been set successfully!"
 echo "Note: Some changes may require logging out and back in to take full effect."

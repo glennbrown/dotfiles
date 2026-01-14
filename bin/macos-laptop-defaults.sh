@@ -184,15 +184,15 @@ defaults write com.apple.dock wvous-tl-modifier -int 1048576
 echo "Configuring Safari..."
 
 # Enable Develop menu and Web Inspector
-defaults write com.apple.safari IncludeDevelopMenu -bool true
-defaults write com.apple.safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
 
 # Add context menu item for showing Web Inspector
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
 # Show full URL in address bar
-defaults write com.apple.safari ShowFullURLInSmartSearchField -bool true
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
 ###############################################################################
 # Mail                                                                        #
@@ -222,7 +222,7 @@ defaults write com.apple.ActivityMonitor ShowCategory -int 0
 echo "Configuring App Store..."
 
 # Disable in-app rating requests
-defaults write com.apple.appstore InAppReviewEnabled -int 0
+defaults write com.apple.AppStore InAppReviewEnabled -int 0
 
 ###############################################################################
 # Time Machine                                                                #
