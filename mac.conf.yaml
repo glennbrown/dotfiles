@@ -1,13 +1,13 @@
 - plugins:
-    - dotbot-plugins/dotbot-brew/
-
+    - dotbot-plugins/dotbot-brew/brew.py
+    
 - defaults:
-    - link:
-        relink: true
-        force: true
-        create: true
-    - brewfile:
-      - stdout: true
+    link:
+      relink: true
+      force: true
+      create: true
+    brewfile:
+      stdout: true
 
 - link:
     ~/.Brewfile:
@@ -22,8 +22,8 @@
       if: '[ "$(hostname -s)" = "thor" ]'
       path: mac/dock/server.yaml
 
-- brewfile:
-    - ~/.Brewfile
+- brewfile: 
+    - .Brewfile
 
 # - shell:
     # - ~/bin/dock_manager.sh
