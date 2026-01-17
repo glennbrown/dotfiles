@@ -1,3 +1,4 @@
+source ~/.profile
 export PATH=/opt/homebrew/bin:$PATH
 export MANPATH=/opt/homebrew/share/man:$MANPATH
 

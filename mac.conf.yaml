@@ -23,13 +23,13 @@
       path: mac/dock/server.yaml
 
 - brewfile: 
-    - .Brewfile
+    - ~/.Brewfile
 
-# - shell:
-    # - ~/bin/dock_manager.sh
-    #- command: |
-    #    if [ "$(hostname -s)" = "Glenns-Laptop" ]; then
-    #      ~/bin/macos-laptop-defaults.sh
-    #    elif [ "$(hostname -s)" = "thor" ]; then
-    #      ~/bin/macos-server-defaults.sh
-    #    fi
+- shell:
+  - bin/dock_manager.sh
+  - command: |
+     if [ "$(hostname -s)" = "Glenns-Laptop" ]; then
+       ~/bin/macos-laptop-defaults.sh
+     elif [ "$(hostname -s)" = "thor" ]; then
+       ~/bin/macos-server-defaults.sh
+     fi

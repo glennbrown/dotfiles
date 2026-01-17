@@ -2,14 +2,14 @@
 tap "glennbrown/tap"
 tap "oven-sh/bun"
 tap "teamookla/speedtest"
-tap "valkyrie00/bbrew"
+tap "Valkyrie00/bbrew"
 
 # Brew packages
 brew "bash"
 brew "bash-completion@2"
-brew "bbrew"
+brew "Valkyrie00/bbrew/bbrew"
 brew "btop"
-brew "bun"
+brew "oven-sh/bun/bun"
 brew "cdrtools"
 brew "certbot"
 brew "colima"
@@ -25,7 +25,7 @@ brew "docker-compose"
 brew "docker-credential-helper"
 brew "dockutil"
 brew "fastfetch"
-brew "figurine"
+brew "glennbrown/tap/figurine"
 brew "findutils"
 brew "fio"
 brew "ffmpeg"
@@ -84,7 +84,7 @@ brew "xvid"
 brew "xz"
 brew "yt-dlp"
 brew "zsh-autosuggestions"
-brew "zsh-completions", args: ["--HEAD"]
+brew "zsh-completions", args: ["HEAD"]
 brew "zsh-history-substring-search"
 brew "zstd"
 
@@ -97,7 +97,7 @@ brew "dust" # Modern du
 brew "eza" # ls replacement
 brew "fd" # Find replacement
 brew "fzf" # Fuzzy finder
-brew "lsd " # ls replacement
+brew "lsd" # ls replacement
 brew "procs" # Rust replacement for ps
 brew "just" # Command runner
 brew "ripgrep" # Fast grep

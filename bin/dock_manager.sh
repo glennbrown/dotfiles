@@ -2,6 +2,16 @@
 
 set -e
 
+# Ensure system binaries are in PATH
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+# Ensure Homebrew is in PATH
+eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv 2>/dev/null || true)"
+
+# Define tool paths
+DOCKUTIL_BIN="${HOMEBREW_PREFIX}/bin/dockutil"
+YQ_BIN="${HOMEBREW_PREFIX}/bin/yq"
+
 # Default configuration file path
 CONFIG_FILE="$HOME/.dock-config.yaml"
 
@@ -36,7 +46,7 @@ fi
 
 # Check if yq is installed
 echo "Checking for yq..."
-if ! command -v yq &> /dev/null; then
+if ! command -v "$YQ_BIN" &> /dev/null; then
     echo "Installing yq via Homebrew..."
     brew install yq
 else
@@ -45,7 +55,7 @@ fi
 
 # Install dockutil if not already installed
 echo "Checking for dockutil..."
-if ! command -v dockutil &> /dev/null; then
+if ! command -v "$DOCKUTIL_BIN" &> /dev/null; then
     echo "Installing dockutil via Homebrew..."
     brew install dockutil
 else
@@ -53,8 +63,7 @@ else
 fi
 
 # Parse YAML config file
-ITEMS_TO_REMOVE=$(yq eval '.dockitems_remove[]?' "$CONFIG_FILE" 2>/dev/null || echo "")
-ITEMS_TO_ADD=$(yq eval -o=json '.dockitems_persist[]?' "$CONFIG_FILE" 2>/dev/null || echo "")
+ITEMS_TO_REMOVE=$("$YQ_BIN" eval '.dockitems_remove[]?' "$CONFIG_FILE" 2>/dev/null || echo "")
 
 # Remove configured Dock items
 echo ""
@@ -67,12 +76,12 @@ if [[ -n "$ITEMS_TO_REMOVE" ]]; then
         CURRENT=$((CURRENT + 1))
         echo "Checking if '$item' is in the Dock..."
         
-        if dockutil --find "$item" &> /dev/null; then
+        if "$DOCKUTIL_BIN" --find "$item" &> /dev/null; then
             echo "Removing '$item' from Dock..."
             if [[ $CURRENT -eq $REMOVE_COUNT ]]; then
-                dockutil --remove "$item"
+                "$DOCKUTIL_BIN" --remove "$item"
             else
-                dockutil --remove "$item" --no-restart
+                "$DOCKUTIL_BIN" --remove "$item" --no-restart
             fi
         else
             echo "'$item' not found in Dock, skipping..."
@@ -90,27 +99,29 @@ fi
 # Add configured Dock items
 echo ""
 echo "Adding Dock items..."
-if [[ -n "$ITEMS_TO_ADD" ]]; then
-    ADD_COUNT=$(echo "$ITEMS_TO_ADD" | wc -l | tr -d ' ')
+ADD_COUNT=$("$YQ_BIN" eval '.dockitems_persist | length' "$CONFIG_FILE" 2>/dev/null || echo "0")
+
+if [[ "$ADD_COUNT" -gt 0 ]]; then
     CURRENT=0
     ADDED=false
     
-    while IFS= read -r item_json; do
+    for ((i=0; i<ADD_COUNT; i++)); do
         CURRENT=$((CURRENT + 1))
-        NAME=$(echo "$item_json" | yq eval '.name' -)
-        PATH=$(echo "$item_json" | yq eval '.path' -)
+        NAME=$("$YQ_BIN" eval ".dockitems_persist[$i].name" "$CONFIG_FILE")
+        APP_PATH=$("$YQ_BIN" eval ".dockitems_persist[$i].path" "$CONFIG_FILE")
         
         echo "Checking if '$NAME' exists in Dock..."
         
-        if dockutil --find "$NAME" &> /dev/null; then
-            SECTION=$(dockutil --find "$NAME" | sed -n 's/.*was found in \(.*\) at slot.*/\1/p')
+        if "$DOCKUTIL_BIN" --find "$NAME" &> /dev/null; then
+            echo "DEBUG: PATH=$PATH"
+            SECTION=$("$DOCKUTIL_BIN" --find "$NAME" | sed -n 's/.*was found in \(.*\) at slot.*/\1/p')
             
             if [[ "$SECTION" == "recent-apps" ]]; then
                 echo "'$NAME' found in recent-apps section, re-adding..."
                 if [[ $CURRENT -eq $ADD_COUNT ]]; then
-                    dockutil --add "$PATH" --label "$NAME"
+                    "$DOCKUTIL_BIN" --add "$APP_PATH" --label "$NAME"
                 else
-                    dockutil --add "$PATH" --label "$NAME" --no-restart
+                    "$DOCKUTIL_BIN" --add "$APP_PATH" --label "$NAME" --no-restart
                 fi
                 ADDED=true
             else
@@ -119,13 +130,13 @@ if [[ -n "$ITEMS_TO_ADD" ]]; then
         else
             echo "Adding '$NAME' to Dock..."
             if [[ $CURRENT -eq $ADD_COUNT ]]; then
-                dockutil --add "$PATH" --label "$NAME"
+                "$DOCKUTIL_BIN" --add "$APP_PATH" --label "$NAME"
             else
-                dockutil --add "$PATH" --label "$NAME" --no-restart
+                "$DOCKUTIL_BIN" --add "$APP_PATH" --label "$NAME" --no-restart
             fi
             ADDED=true
         fi
-    done <<< "$ITEMS_TO_ADD"
+    done
     
     if [[ $ADDED == true ]]; then
         echo "Pausing for 7 seconds..."
@@ -138,21 +149,23 @@ fi
 # Position configured Dock items
 echo ""
 echo "Positioning Dock items..."
-if [[ -n "$ITEMS_TO_ADD" ]]; then
+PERSIST_COUNT=$("$YQ_BIN" eval '.dockitems_persist | length' "$CONFIG_FILE" 2>/dev/null || echo "0")
+
+if [[ "$PERSIST_COUNT" -gt 0 ]]; then
     # Count items that have a position defined
     POSITION_COUNT=0
-    while IFS= read -r item_json; do
-        POS=$(echo "$item_json" | yq eval '.pos // "null"' -)
+    for ((i=0; i<PERSIST_COUNT; i++)); do
+        POS=$("$YQ_BIN" eval ".dockitems_persist[$i].pos // null" "$CONFIG_FILE")
         if [[ "$POS" != "null" ]] && [[ "$POS" -gt 0 ]] 2>/dev/null; then
             POSITION_COUNT=$((POSITION_COUNT + 1))
         fi
-    done <<< "$ITEMS_TO_ADD"
+    done
     
     CURRENT=0
     
-    while IFS= read -r item_json; do
-        NAME=$(echo "$item_json" | yq eval '.name' -)
-        POS=$(echo "$item_json" | yq eval '.pos // "null"' -)
+    for ((i=0; i<PERSIST_COUNT; i++)); do
+        NAME=$("$YQ_BIN" eval ".dockitems_persist[$i].name" "$CONFIG_FILE")
+        POS=$("$YQ_BIN" eval ".dockitems_persist[$i].pos // null" "$CONFIG_FILE")
         
         if [[ "$POS" == "null" ]] || [[ "$POS" -le 0 ]] 2>/dev/null; then
             continue
@@ -161,15 +174,15 @@ if [[ -n "$ITEMS_TO_ADD" ]]; then
         CURRENT=$((CURRENT + 1))
         
         echo "Checking position of '$NAME'..."
-        if DOCK_OUTPUT=$(dockutil --find "$NAME" 2>&1); then
+        if DOCK_OUTPUT=$("$DOCKUTIL_BIN" --find "$NAME" 2>&1); then
             CURRENT_POS=$(echo "$DOCK_OUTPUT" | sed -n 's/.*slot \([0-9]*\) in.*/\1/p')
             
             if [[ "$CURRENT_POS" -ne "$POS" ]]; then
                 echo "Moving '$NAME' to position $POS (currently at $CURRENT_POS)..."
                 if [[ $CURRENT -eq $POSITION_COUNT ]]; then
-                    dockutil --move "$NAME" --position "$POS"
+                    "$DOCKUTIL_BIN" --move "$NAME" --position "$POS"
                 else
-                    dockutil --move "$NAME" --position "$POS" --no-restart
+                    "$DOCKUTIL_BIN" --move "$NAME" --position "$POS" --no-restart
                 fi
             else
                 echo "'$NAME' is already at position $POS"
@@ -177,7 +190,7 @@ if [[ -n "$ITEMS_TO_ADD" ]]; then
         else
             echo "Warning: Could not find '$NAME' in Dock"
         fi
-    done <<< "$ITEMS_TO_ADD"
+    done
 else
     echo "No items to position"
 fi
