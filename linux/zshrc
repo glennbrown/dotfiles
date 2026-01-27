@@ -188,6 +188,17 @@ if [ -x $(command -v zoxide) ]; then
 fi
 
 # Starship Prompt
-if [ -x $(command -v starship) ]; then
-	eval "$(starship init zsh)"
+
+# Only run starship when available AND not on a text/serial console
+if command -v starship >/dev/null 2>&1; then
+  case "$(tty)" in
+    /dev/tty[0-9]*|/dev/ttyS*|/dev/ttyAMA*|/dev/hvc*)
+      # On a text/serial console → do nothing
+      ;;
+    *)
+      # All other terminals (pts/ttyUSB/GUI terminals, SSH, etc.)
+      eval "$(starship init zsh)"
+      ;;
+  esac
 fi
+
