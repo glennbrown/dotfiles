@@ -1,0 +1,253 @@
+# .zshrc
+# Mac Specific Zsh configuration file
+
+setopt prompt_subst						# enable command substitution in prompt
+setopt interactivecomments		# allow comments in interactive mode
+setopt longlistjobs						# list jobs in long format
+setopt alwaystoend
+setopt autocd									# change directory just by typing its name
+setopt autopushd							# automatically pushd directories on dirstack
+setopt pushdignoredups				# don't push dups on stack
+setopt pushdminus							# pushd -N goes to Nth dir in stack
+setopt combiningchars
+setopt completeinword
+setopt extendedglob						# use extended globbing (#, ~, ^)
+setopt numericglobsort				# sort filenames numerically when it makes sense
+setopt noflowcontrol					# Disable flow control for zsh
+setopt nobeep									# don't beep on errors (in ZLE)
+
+# Terminal
+export TERM=xterm-256color
+export DOTFILES="~/.dotfiles"
+
+# Set PATH
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+# Homebrew Settings
+export HOMEBREW_AUTO_UPDATE_SECS=604800 #Update homebrew once a week
+export HOMEBREW_NO_ANALYTICS=1 #Disable homebrew analytics
+
+# History
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt histexpiredupsfirst histignorespace histverify
+setopt histignoredups			# ignore consecutive dups in history
+setopt extendedhistory		# save timestamps in history
+setopt sharehistory				# share history between sessions
+
+# 1Password SSH Agent
+# Only loads when connected via local session or screen sharing
+if [[ -S "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] && [[ -z "$SSH_CONNECTION" ]]; then
+    export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+fi
+
+# ZSH Prompt Git info
+# Load required modules
+autoload -Uz colors && colors
+autoload -Uz vcs_info
+
+# VCS info configuration
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' unstagedstr '%F{red}*'   # display this when there are unstaged changes
+zstyle ':vcs_info:*' stagedstr '%F{yellow}+'  # display this when there are staged changes
+zstyle ':vcs_info:*' actionformats '%F{5}(%F{2}%b%F{3}|%F{1}%a%c%u%m%F{5})%f '
+zstyle ':vcs_info:*' formats '%F{5}(%F{2}%b%c%u%m%F{5})%f '
+zstyle ':vcs_info:*' enable git
+
+# Git hook for untracked files
+zstyle ':vcs_info:git*+set-message:*' hooks untracked-git
+
++vi-untracked-git() {
+  if command git status --porcelain 2>/dev/null | command grep -q '??'; then
+    hook_com[misc]='%F{red}?'
+  else
+    hook_com[misc]=''
+  fi
+}
+
+# Configure window title and vcs info
+case "$TERM" in
+    xterm*|rxvt*)
+        precmd() {
+            vcs_info
+            print -Pn "\e]0;%n@%m: %~\a"
+				# Load add-zsh-hook and register precmd
+				autoload -U add-zsh-hook
+				add-zsh-hook precmd precmd
+        }
+        ;;
+    *)
+        ;;
+esac
+
+# Command completion
+if [ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]; then
+  fpath+=($HOMEBREW_PREFIX/share/zsh-completions)
+fi
+
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=** r:|=** l:|=*'
+zstyle ':completion:*' max-errors 2 numeric
+zstyle ':completion:*' menu select=5
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl true
+zstyle :compinstall filename '/Users/gbrown/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+bindkey -e
+# End of lines configured by zsh-newuser-install
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+# Prompt, this maybe overridden by starship later
+if [ "$color_prompt" = yes ]; then
+    PROMPT='%B%F{green}%n@%m%f%b:%B%F{blue}%~%f%b$ '
+    RPROMPT='${vcs_info_msg_0_}'
+else
+    PROMPT='%n@%m:%~$ '
+    RPROMPT=''
+fi
+unset color_prompt force_color_prompt
+
+# Homebrew command-not-found
+HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+  source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
+fi
+
+# Allow history search via up/down keys.
+if [ -f "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]; then
+  source $HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+  bindkey "^[[A" history-substring-search-up
+  bindkey "^[[B" history-substring-search-down
+fi
+
+# Autosuggestions based on history
+if [ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+  source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# Enable color support of ls, less and man
+if [ -x $HOMEBREW_PREFIX/bin/gdircolors ]; then
+    test -r ~/.dircolors && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
+    # MacOS support
+    export LSCOLORS="ExgxDxGxGxDxdxHxHxHxEx"
+    export CLICOLOR=1
+
+    alias ls='ls --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
+	alias diff='diff --color=auto'
+
+    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+
+    # Take advantage of $LS_COLORS for completion as well
+    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+    zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+fi
+
+# Node Version Manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='code'
+fi
+
+# Include alias file (if present) containing aliases for ssh, etc.
+if [ -s "$HOME/.aliases" ]; then
+    source ~/.aliases
+fi
+
+# Delete a given line number in the known_hosts file.
+knownrm() {
+ re='^[0-9]+$'
+ if ! [[ $1 =~ $re ]] ; then
+   echo "error: line number missing" >&2;
+ else
+   sed -i '' "$1d" ~/.ssh/known_hosts
+ fi
+}
+
+# Homebrew command-not-found
+HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+  source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
+fi
+
+# Set up fzf key bindings and fuzzy completion
+if [ -x $(command -v fzf) ]; then
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_COLORS="bg+:-1,fg:gray,fg+:white,border:black,spinner:0,hl:yellow,header:blue,info:green,pointer:red,marker:blue,prompt:gray,hl+:red"
+    export FZF_DEFAULT_OPTS="--height 70% \
+    --border sharp \
+    --layout reverse \
+    --color '$FZF_COLORS' \
+    --prompt '∷ ' \
+    --pointer ▶ \
+    --marker ⇒"
+    export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 10'"
+    export FZF_COMPLETION_DIR_COMMANDS="cd pushd rmdir tree ls"
+    source <(fzf --zsh)
+fi
+
+# Python Fix
+# https://hynek.me/til/rq-macos/
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# Surpress Node Warnings
+export NODE_NO_WARNINGS=1
+
+# Setup zoxide
+if [ -x $(command -v zoxide) ]; then
+	eval "$(zoxide init zsh)"
+fi
+
+# Starship Prompt
+# Only initialize if:
+# 1. starship command is available
+# 2. NOT running in Terminal.app
+# 3. NOT in a text console (tty)
+if command -v starship &> /dev/null && \
+   [[ "$TERM_PROGRAM" != "Apple_Terminal" ]] && \
+   [[ -n "$TERM" && "$TERM" != "linux" ]]; then
+    eval "$(starship init zsh)"
+fi
