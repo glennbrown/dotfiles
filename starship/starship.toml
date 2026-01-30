@@ -99,13 +99,13 @@ format = '[[ $symbol $branch ](fg:text_accent bg:blue_dark)]($style)'
 style = "bg:blue_dark"
 format = '[[($all_status$ahead_behind )](fg:text_accent bg:blue_dark)]($style)'
 
-[python]
-symbol = " "
+[nodejs]
+symbol = ""
 style = "bg:midnight_mid"
 format = '[[ $symbol( $version)(\($virtualenv\)) ](fg:text_accent bg:midnight_mid)]($style)'
 
-[nodejs]
-symbol = " "
+[c]
+symbol = " "
 style = "bg:midnight_mid"
 format = '[[ $symbol ($version) ](fg:text_accent bg:midnight_mid)]($style)'
 
@@ -124,11 +124,6 @@ symbol = " "
 style = "bg:midnight_mid"
 format = '[[ $symbol ($version) ](fg:text_accent bg:midnight_mid)]($style)'
 
-[c]
-symbol = " "
-style = "bg:midnight_mid"
-format = '[[ $symbol ($version) ](fg:text_accent bg:midnight_mid)]($style)'
-
 [java]
 symbol = " "
 style = "bg:midnight_mid"
@@ -143,6 +138,21 @@ format = '[[ $symbol ($version) ](fg:text_accent bg:midnight_mid)]($style)'
 symbol = " "
 style = "bg:midnight_mid"
 format = '[[ $symbol ($version) ](fg:text_accent bg:midnight_mid)]($style)'
+
+[python]
+symbol = " "
+style = "bg:midnight_mid"
+format = '[[ $symbol( $version)(\($virtualenv\)) ](fg:text_accent bg:midnight_mid)]($style)'
+
+[docker_context]
+symbol = ""
+style = "bg:midnight_mid"
+format = '[[ $symbol ($context) ](fg:text_accent bg:midnight_mid)]($style)'
+
+[conda]
+symbol = "  "
+style = "bg:midnight_mid"
+format = '[[ $symbol$environment ](fg:text_accent bg:midnight_mid)]($style)'
 
 [time]
 disabled = false
