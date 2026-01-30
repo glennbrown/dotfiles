@@ -1,34 +1,46 @@
+# .bashrc
+# Mac specific bash configuration
+#
+
+# Terminal
+export TERM='xterm-256color'
+export DOTFILES="${HOME}/.dotfiles"
+
 # If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+[ -z "$PS1" ] && return
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 
 # don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
 HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=2000
-HISTFILESIZE=4000
+HISTSIZE=50000
+HISTFILESIZE=50000
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+# Homebrew Settings
+export HOMEBREW_AUTO_UPDATE_SECS=604800 #Update homebrew once a week
+export HOMEBREW_NO_ANALYTICS=1 #Disable homebrew analytics
 
-# Bash shopt
-shopt -s checkjobs
-shopt -s cmdhist
+# Use macOS's built-in ssh-agent
+#export SSH_AUTH_SOCK=$(launchctl getenv SSH_AUTH_SOCK)
 
-# make less more friendly for non-text input files
-export LESSOPEN="|/opt/homebrew/bin/lesspipe.sh %s"
-
-# Command not found handling
+# if the command-not-found package is installed, use it
 HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
 if [ -f "$HB_CNF_HANDLER" ]; then
 source "$HB_CNF_HANDLER";
+fi
+
+#Make less handle binaries better
+if [ -f ${HOMEBREW_PREFIX}/bin/lesspipe.sh ]
+then
+    export LESSOPEN="|${HOMEBREW_PREFIX}/bin/lesspipe.sh %s"
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
@@ -36,12 +48,28 @@ case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
 
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
 if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[00m\]\$ '
 else
     PS1='\u@\h:\w\$ '
 fi
-unset color_prompt
+unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -52,15 +80,49 @@ xterm*|rxvt*)
     ;;
 esac
 
-export CLICOLOR=1
-export LSCOLORS=Gxfxcxdxbxegedabagacad
+# Enable color support of ls, less and man
+if [ -x "$HOMEBREW_PREFIX/bin/gdircolors" ]; then
+    # Only eval dircolors if the file exists
+    if [ -r ~/.dircolors ]; then
+        eval "$(gdircolors -b ~/.dircolors)"
+    else
+        eval "$(gdircolors -b)"
+    fi
 
-# Aliaes
-alias l='ls -lah'
-alias la='ls -lAh'
-alias ll='ls -lh'
-alias ls='ls -G'
-alias lsa='ls -lah'
-alias egrep='grep -E --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
-alias fgrep='grep -F --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
-alias grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
+    # MacOS support
+    export LSCOLORS="ExgxDxGxGxDxdxHxHxHxEx"
+    export CLICOLOR=1
+
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias diff='diff --color=auto'
+
+    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+fi
+
+
+# Node Version Manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# Include alias file (if present) containing aliases for ssh, etc.
+if [ -s "$HOME/.aliases" ]; then
+    source "$HOME/.aliases"
+fi
+
+# Python
+# https://hynek.me/til/rq-macos/
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+# Surpress cert warnings for urllib3, they are annoying when dealing with internal cert authority's
+
+# Surpress Node Warnings
+export NODE_NO_WARNINGS=1

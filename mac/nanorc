@@ -1,0 +1,27 @@
+## Syntax highlighting
+include /opt/homebrew/share/nano/*.nanorc
+include /opt/homebrew/share/nanorc/*.nanorc
+
+## Display options
+set linenumbers          # show line numbers (matches: set number)
+set autoindent           # auto indenting (matches: set autoindent)
+set tabsize 2            # 2 spaces for tabs (matches: set tabstop=2)
+set tabstospaces         # spaces instead of tabs (matches: set expandtab)
+
+## Search options
+set casesensitive        # case-sensitive search by default
+
+## Behavior
+set constantshow         # always show cursor position (similar to: set showcmd)
+
+## Visual feedback
+set matchbrackets "(<[{)>]}"  # show matching brackets (matches: set showmatch)
+
+## Disable problematic features
+set nohelp               # hide the help lines at bottom for more space
+
+## Optional: uncomment if you want mouse support
+set mouse
+
+## Optional: enable soft wrapping for long lines
+# set softwrap

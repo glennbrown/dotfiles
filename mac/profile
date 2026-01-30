@@ -1,20 +1,24 @@
+# .profile for the Bourne and Bourne compatible shells (sh, bash, ksh, ash, etc)
+# Mac Specific Configuration
+
 # Load Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# Load bashrc
 if [ "${PS1-}" ]; then
   if [ "${BASH-}" ] && [ "$BASH" != "/bin/sh" ]; then
-    # The file bash.bashrc already sets the default PS1.
-    # PS1='\h:\w\$ '
     if [ -f ${HOME}/.bashrc ]; then
-      . ${HOME}/.bashrc
-    fi
-  else
-    if [ "$(id -u)" -eq 0 ]; then
-      PS1='# '
-    else
-      PS1='$ '
+      source ${HOME}/.bashrc
     fi
   fi
 fi
 
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+# load profile.d
+if [[ -d "${HOMEBREW_PREFIX}/etc/profile.d" ]]; then
+  for i in "${HOMEBREW_PREFIX}/etc/profile.d"/*.sh; do
+    if [[ -r "$i" ]]; then
+      source "$i"
+    fi
+  done
+  unset i
+fi

@@ -83,7 +83,7 @@ esac
 
 # Command completion
 if [ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]; then
-  fpath+=($HOMEBREW_PREFIX/share/zsh-completions)
+    FPATH=$HOMEBREW_PREFIX/share/zsh-completions:$FPATH
 fi
 
 # The following lines were added by compinstall
@@ -188,7 +188,7 @@ export NVM_DIR="$HOME/.nvm"
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='code'
+  export EDITOR='zed'
 fi
 
 # Include alias file (if present) containing aliases for ssh, etc.
@@ -205,12 +205,6 @@ knownrm() {
    sed -i '' "$1d" ~/.ssh/known_hosts
  fi
 }
-
-# Homebrew command-not-found
-HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
-if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
-  source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
-fi
 
 # Set up fzf key bindings and fuzzy completion
 if [ -x $(command -v fzf) ]; then
