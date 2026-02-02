@@ -18,7 +18,7 @@ setopt nobeep									# don't beep on errors (in ZLE)
 
 # Terminal
 export TERM=xterm-256color
-export DOTFILES="~/.dotfiles"
+export DOTFILES="$HOME/.dotfiles"
 
 # Set PATH
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
@@ -38,7 +38,7 @@ setopt sharehistory				# share history between sessions
 
 # 1Password SSH Agent
 # Only loads when connected via local session or screen sharing
-if [[ -S "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] && [[ -z "$SSH_CONNECTION" ]]; then
+if [[ -S "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] && [[ -z "$SSH_CONNECTION" ]]; then
     export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 fi
 
