@@ -1,0 +1,65 @@
+# ls aliases
+if command -v eza &>/dev/null; then
+    alias ls='eza -g --group-directories-first --icons=always'
+    alias ll='eza -l'
+    alias la='eza -lA'
+    alias lr='eza -lrA'
+    alias lt='eza -lTA'
+else
+    # GNU/BSD/macOS ls
+    alias ls='ls --color=auto
+    alias ll='ls -lh'
+    alias la='ls -lAh'
+    alias lr='ls -lAhrt'
+fi
+
+# grep
+alias grep='grep --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
+alias egrep='egrep -E --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
+alias fgrep='fgrep -F --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
+
+# git
+if command -v git &>/dev/null; then
+    alias gs='git status'
+    alias gc='git commit'
+    alias gp='git pull --rebase'
+    alias gcam='git commit -am'
+    alias gl='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+fi
+
+# Works in both bash and zsh
+_dotfiles_update_check() {
+    local dotfiles_dir="${DOTFILES_DIR:-$HOME/.dotfiles}"
+    local stamp_file="${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles_fetch_stamp"
+
+    [[ -d "$dotfiles_dir/.git" ]] || return
+
+    # Only fetch once per day using epoch comparison
+    local now stamp_time
+    now=$(date +%s)
+    stamp_time=$(date -r "$stamp_file" +%s 2>/dev/null || echo 0)
+
+    if (( now - stamp_time > 86400 )); then
+        git -C "$dotfiles_dir" fetch --quiet origin 2>/dev/null &
+        disown
+        touch "$stamp_file"
+        return
+    fi
+
+    local local_sha remote_sha
+    local_sha=$(git -C "$dotfiles_dir" rev-parse HEAD 2>/dev/null)
+    remote_sha=$(git -C "$dotfiles_dir" rev-parse @{u} 2>/dev/null)
+
+    if [[ -n "$remote_sha" && "$local_sha" != "$remote_sha" ]]; then
+        echo "dotfiles: updates available — run 'dotfiles-update' to pull"
+    fi
+}
+
+dotfiles-update() {
+    local dotfiles_dir="${DOTFILES_DIR:-$HOME/.dotfiles}"
+
+    [[ -d "$dotfiles_dir/.git" ]] || return
+
+    cd $dotfiles_dir && git pull
+
+}

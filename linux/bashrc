@@ -1,0 +1,148 @@
+# ~/.bashrc
+# Linux Specific bash configation file
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# Terminal
+export TERM=xterm-256color
+export DOTFILES_DIR="~/.dotfiles"
+
+# Shell behaviour
+shopt -s autocd # If set, a command name that is the name of a directory is executed as if it were the argument to the cd command.
+shopt -s checkwinsize # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+shopt -s direxpand
+shopt -s dirspell
+shopt -s dotglob
+shopt -s hostcomplete # Hostname completion
+shopt -s nocaseglob
+shopt -s globstar # If set, the pattern ‘**’ used in a filename expansion context will match all files and zero or more directories and subdirectories.
+
+# History
+HISTFILE=~/.bash_history
+HISTCONTROL=ignoreboth
+HISTSIZE=50000
+HISTFILESIZE=50000
+shopt -s histappend # append to the history file, don't overwrite it
+shopt -s lithist
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias diff='diff --color=auto'
+	alias ip='ip --color=auto'
+
+	export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+	export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+	export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+	export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+	export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+	export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+	export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Alias definitions.
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# Set up fzf key bindings and fuzzy completion
+if [ -x $(command -v fzf) ]; then
+	export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+	export FZF_COLORS="bg+:-1,fg:gray,fg+:white,border:black,spinner:0,hl:yellow,header:blue,info:green,pointer:red,marker:blue,prompt:gray,hl+:red"
+	export FZF_DEFAULT_OPTS="--height 70% \
+	--border sharp \
+	--layout reverse \
+	--color '$FZF_COLORS' \
+	--prompt '∷ ' \
+	--pointer ▶ \
+	--marker ⇒"
+	export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 10'"
+	export FZF_COMPLETION_DIR_COMMANDS="cd pushd rmdir tree ls"
+
+	# Fallback for older fzf versions that don't support --bash
+	if fzf --bash &>/dev/null; then
+        eval "$(fzf --bash)"
+	else
+	    [[ -f /usr/share/doc/fzf/examples/key-bindings.bash ]] && \
+			. /usr/share/doc/fzf/examples/key-bindings.bash
+		[[ -f /usr/share/doc/fzf/examples/completion.bash ]] && \
+		    . /usr/share/doc/fzf/examples/completion.bash
+	fi
+fi
+
+# Setup zoxide
+if [ -x $(command -v zoxide) ]; then
+    eval "$(zoxide init bash)"
+fi
+
+# Finishing up
+_dotfiles_update_check
