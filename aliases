@@ -7,7 +7,7 @@ if command -v eza &>/dev/null; then
     alias lt='eza -lTA'
 else
     # GNU/BSD/macOS ls
-    alias ls='ls --color=auto
+    alias ls='ls --color=auto'
     alias ll='ls -lh'
     alias la='ls -lAh'
     alias lr='ls -lAhrt'
