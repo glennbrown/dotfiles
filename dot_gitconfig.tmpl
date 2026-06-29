@@ -1,55 +1,55 @@
 [user]
-  email = {{ .email }}
-  name = {{ .name }}
+  	email = {{ .email }}
+  	name = {{ .name }}
 {{- if ne .gitSigningKey "" }}
-  signingkey = {{ .gitSigningKey }}
+  	signingkey = {{ .gitSigningKey }}
 {{- end }}
 
 [core]
-	excludesfile = {{ .chezmoi.homeDir }}/.gitignore
-	autocrlf = false
-	pager = delta
+		excludesfile = {{ .chezmoi.homeDir }}/.gitignore
+		autocrlf = false
+		pager = delta
 
 [gpg]
-	format = ssh
+		format = ssh
 
 {{ if eq .chezmoi.os "darwin" -}}
 [gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+		program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 {{ end -}}
 
 [commit]
-	gpgsign = true
+		gpgsign = true
 
 [filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
+  	clean = git-lfs clean -- %f
+  	smudge = git-lfs smudge -- %f
+  	process = git-lfs filter-process
+  	required = true
 
 [fetch]
-	prune = true
+		prune = true
 
 [pull]
-	rebase = false
+		rebase = false
 
 [init]
-	defaultBranch = main
+		defaultBranch = main
 
 [push]
-	autoSetupRemote = true
+		autoSetupRemote = true
 
 [interactive]
-	diffFilter = delta --color-only
+		diffFilter = delta --color-only
 
 [delta]
-	navigate = true
-	light = false
-	side-by-side = true
-	line-numbers = true
+		navigate = true
+		light = false
+		side-by-side = true
+		line-numbers = true
 
 [merge]
-	conflictstyle = diff3
+	 conflictstyle = diff3
 
 [diff]
-	colorMoved = default
+	 colorMoved = default
