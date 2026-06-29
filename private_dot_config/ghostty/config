@@ -1,0 +1,66 @@
+# --- Keybindings ---
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+
+# --- Theme ---
+theme = Nord
+window-theme = system
+
+# --- Typography ---
+font-family = JetBrainsMono Nerd Font Mono
+font-size = 14
+font-feature = calt
+font-feature = liga
+
+# --- Window ---
+window-colorspace = display-p3
+window-height = 50
+window-width = 150
+window-save-state = always
+window-inherit-working-directory = true
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+confirm-close-surface = false
+
+# --- macOS ---
+macos-titlebar-style = native
+macos-auto-secure-input = true
+macos-option-as-alt = left
+
+# --- Cursor ---
+cursor-style = block
+cursor-style-blink = true
+cursor-opacity = 0.9
+cursor-color = cell-foreground
+
+# --- Splits ---
+unfocused-split-opacity = 0.85
+
+# --- Quick Terminal ---
+# Ctrl+` from anywhere on macOS. Requires Accessibility + Login Items.
+quick-terminal-position = top
+quick-terminal-screen = mouse
+quick-terminal-autohide = true
+quick-terminal-animation-duration = 0.15
+
+# --- Shell Integration ---
+shell-integration = detect
+shell-integration-features = no-cursor,sudo,title,ssh-env,ssh-terminfo
+
+# --- Clipboard ---
+clipboard-paste-protection = true
+clipboard-paste-bracketed-safe = true
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+
+# --- Mouse ---
+copy-on-select = clipboard
+link-url = true
+
+# --- Scrollback ---
+scrollback-limit = 25000000
+
+# Updates
+auto-update = download
+auto-update-channel = stable

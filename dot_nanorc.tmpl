@@ -1,5 +1,10 @@
 ## Syntax highlighting
+{{ if eq .chezmoi.os "darwin" }}
+include /opt/homebrew/share/nano/*.nanorc
+include /opt/homebrew/share/nanorc/*.nanorc
+{{ else if eq .chezmoi.os "linux" }}
 include /usr/share/nano/*.nanorc
+{{ end }}
 
 ## Display options
 set linenumbers          # show line numbers (matches: set number)
@@ -20,7 +25,7 @@ set matchbrackets "(<[{)>]}"  # show matching brackets (matches: set showmatch)
 set nohelp               # hide the help lines at bottom for more space
 
 ## Optional: uncomment if you want mouse support
-set mouse
+#set mouse
 
 ## Optional: enable soft wrapping for long lines
 # set softwrap

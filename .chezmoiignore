@@ -1,0 +1,18 @@
+# Documentation
+README.md
+
+# License
+LICENSE
+
+{{ if eq .chezmoi.os "linux" }}
+.zprofile
+.zshrc
+.claude
+.homebrew
+.config/ghostty
+.config/zed
+{{ else if eq .chezmoi.os "darwin" }}
+.profile
+.bashrc
+.inputrc
+{{ end }}

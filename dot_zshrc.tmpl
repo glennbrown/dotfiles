@@ -1,5 +1,4 @@
 # .zshrc
-# Mac Specific Zsh configuration file
 
 setopt prompt_subst						# enable command substitution in prompt
 setopt interactivecomments		# allow comments in interactive mode
@@ -16,20 +15,6 @@ setopt numericglobsort				# sort filenames numerically when it makes sense
 setopt noflowcontrol					# Disable flow control for zsh
 setopt nobeep									# don't beep on errors (in ZLE)
 
-# Terminal
-export TERM=xterm-256color
-export DOTFILES="$HOME/.dotfiles"
-
-# Functions
-source $DOTFILES/mac/functions.zsh
-
-# Set PATH
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-
-# Homebrew Settings
-export HOMEBREW_AUTO_UPDATE_SECS=604800 #Update homebrew once a week
-export HOMEBREW_NO_ANALYTICS=1 #Disable homebrew analytics
-
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=50000
@@ -42,7 +27,7 @@ setopt sharehistory				# share history between sessions
 # 1Password SSH Agent
 # Only loads when connected via local session or screen sharing
 if [[ -S "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] && [[ -z "$SSH_CONNECTION" ]]; then
-    export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+    SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 fi
 
 # ZSH Prompt Git info
@@ -70,18 +55,28 @@ zstyle ':vcs_info:git*+set-message:*' hooks untracked-git
 }
 
 # Configure window title and vcs info
+# Ghostty handles window title so we only run it when not using Ghostty
 case "$TERM" in
-    xterm*|rxvt*)
-        precmd() {
-            vcs_info
-            print -Pn "\e]0;%n@%m: %~\a"
-				# Load add-zsh-hook and register precmd
-				autoload -U add-zsh-hook
-				add-zsh-hook precmd precmd
-        }
-        ;;
-    *)
-        ;;
+  xterm*|rxvt*)
+      autoload -U add-zsh-hook
+      _update_vcs_info() {
+          vcs_info
+      }
+      _update_window_title() {
+          if [[ -n "$SSH_CONNECTION" || -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+              print -Pn "\e]0;%n@%m: %~\a"
+          else
+              print -Pn "\e]0;%~\a"
+          fi
+      }
+      add-zsh-hook precmd _update_vcs_info
+      if [[ -z "$GHOSTTY_RESOURCES_DIR" ]]; then
+          add-zsh-hook precmd _update_window_title
+          starship_precmd_user_func="_update_window_title"
+      fi
+      ;;x
+  *)
+      ;;
 esac
 
 # Command completion
@@ -164,10 +159,10 @@ if [ -x $HOMEBREW_PREFIX/bin/gdircolors ]; then
     export CLICOLOR=1
 
     alias ls='ls --color=auto'
-	alias grep='grep --color=auto'
-	alias fgrep='fgrep --color=auto'
-	alias egrep='egrep --color=auto'
-	alias diff='diff --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias diff='diff --color=auto'
 
     export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
     export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
@@ -187,27 +182,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='zed'
-fi
-
 # Include alias file (if present) containing aliases for ssh, etc.
 if [ -s "$HOME/.aliases" ]; then
     source ~/.aliases
 fi
-
-# Delete a given line number in the known_hosts file.
-knownrm() {
- re='^[0-9]+$'
- if ! [[ $1 =~ $re ]] ; then
-   echo "error: line number missing" >&2;
- else
-   sed -i '' "$1d" ~/.ssh/known_hosts
- fi
-}
 
 # Set up fzf key bindings and fuzzy completion
 if [ -x $(command -v fzf) ]; then
@@ -225,13 +203,6 @@ if [ -x $(command -v fzf) ]; then
     export FZF_COMPLETION_DIR_COMMANDS="cd pushd rmdir tree ls"
     source <(fzf --zsh)
 fi
-
-# Python Fix
-# https://hynek.me/til/rq-macos/
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-# Surpress Node Warnings
-export NODE_NO_WARNINGS=1
 
 # Setup zoxide
 if [ -x $(command -v zoxide) ]; then
