@@ -8,7 +8,7 @@ LICENSE
 .zprofile
 .zshrc
 .claude
-.homebrew
+.Brewfile
 .config/ghostty
 .config/zed
 {{ else if eq .chezmoi.os "darwin" }}
