@@ -1,6 +1,5 @@
 # Taps
 tap "glennbrown/tap"
-tap "teamookla/speedtest"
 
 # Brew packages
 brew "ansible"
@@ -102,7 +101,7 @@ brew "dust" # Modern du
 brew "eza" # ls replacement
 brew "fd" # Find replacement
 brew "fzf" # Fuzzy finder
-brew "lsd " # ls replacement
+brew "lsd" # ls replacement
 brew "procs" # Rust replacement for ps
 brew "just" # Command runner
 brew "ripgrep" # Fast grep
