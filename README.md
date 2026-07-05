@@ -1,126 +1,87 @@
 # dotfiles
 
-Personal configuration files for macOS and Linux, centered around Zsh with modern CLI tools.
-
-## Structure
-
-```
-.dotfiles/
-├── bin/                        # Scripts
-│   ├── macos-laptop-defaults.sh
-│   └── macos-server-defaults.sh
-├── brewfiles/                  # Homebrew package lists
-│   ├── Brewfile.laptop
-│   └── Brewfile.server
-├── mac/                        # macOS-specific configs
-│   ├── aliases                 # Shell aliases
-│   ├── bashrc                  # Bash config (legacy)
-│   ├── profile                 # POSIX shell profile
-│   ├── zprofile                # Zsh profile
-│   ├── zshrc                   # Primary Zsh config
-│   ├── nanorc                  # Nano config
-│   └── ghostty/                # Ghostty terminal config
-├── linux/                      # Linux-specific configs
-│   └── zshrc                   # Linux Zsh config
-├── starship/                   # Starship prompt themes
-│   ├── starship.toml           # Active theme (Arch Gradient)
-│   └── starship.toml.catppuccin
-├── dircolors                   # GNU ls color definitions
-├── inputrc                     # Readline config
-└── vimrc                       # Vim config
-```
+Personal configuration files for macOS and Linux, managed with [chezmoi](https://chezmoi.io) and centered around Zsh with modern CLI tools.
 
 ## What's Included
 
 ### Shell
 
-- **Zsh** is my primary shell
-- [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions), [zsh-completions](https://github.com/zsh-users/zsh-completions), and [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
-- [Starship](https://starship.rs) prompt with a custom Arch Gradient theme
-- Bash config kept for legacy/fallback use on MacOS
+- **Zsh** is the primary shell on macOS, **Bash** on Linux
+- [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) and [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search) via Homebrew (macOS) or system packages (Linux)
+- [Starship](https://starship.rs) prompt with a custom Arch Gradient theme, skipped on Apple Terminal and text consoles
 - 50,000 line shared history with timestamps
+- [fzf](https://github.com/junegunn/fzf) for fuzzy finding, backed by ripgrep
+- [zoxide](https://github.com/ajeetdsouza/zoxide) as a `cd` replacement
 
 ### Terminal
 
-- [Ghostty](https://ghostty.org) with JetBrains Mono Nerd Font and Nord theme
-- 150x50 default window, 50,000 line scrollback
+- [Ghostty](https://ghostty.org) with JetBrains Mono Nerd Font and Nord theme (macOS only)
+- 150x50 default window with 1Password secure input enabled
 
 ### Editors
 
-- **Zed** as the default local editor, **Vim** over SSH
-- Vim configured with syntax highlighting, 2-space indentation, and system clipboard
+- Chezmoi will prompt for default editor, typically I use **Zed** for macos and **Vim** with linux.
 - Nano with syntax highlighting and line numbers
+- Vim with with some sane defaults
 
 ### Modern CLI Replacements
 
-Installed via Homebrew (see Brewfiles):
-
 | Classic | Replacement |
 |---------|-------------|
-| `grep`  | `ripgrep` (rg) |
-| `find`  | `fd` |
-| `ls`    | `eza` / `lsd` |
+| `ls`    | `eza` (with icons and group-directories-first) |
+| `cat`   | `bat` |
 | `cd`    | `zoxide` |
-| `du`    | `dust` / `dua` |
-| `df`    | `duf` |
-| `ps`    | `procs` |
-| `diff`  | `difftastic` |
-| `tldr`  | `tealdeer` |
+| `find`  | `fd` |
+| `grep`  | `ripgrep` |
+| `diff`  | `git-delta` (in git), `difftastic` |
 
-Plus [fzf](https://github.com/junegunn/fzf) for fuzzy finding with ripgrep integration.
+### Git
 
-### SSH & Security
+- SSH commit signing via 1Password (macOS) or GPG key
+- `delta` as the pager with side-by-side diffs and line numbers
+- Auto-setup of remote tracking branches on push
 
-- 1Password SSH Agent integration (on local sessions)
-- GPG support
+### SSH and Security
+
+- 1Password SSH Agent socket wired up automatically on local macOS sessions (skipped over SSH)
+- SSH commit signing via `op-ssh-sign` on macOS
 
 ### macOS Defaults
 
-Scripts in `bin/` configure macOS system preferences for two machine profiles:
+Scripts in `bin/` configure system preferences for two machine profiles:
 
-- **Laptop** -- trackpad, keyboard repeat, Dock (auto-hide, 36px icons), Finder (show path/status bars, folders on top), screenshots (JPG to ~/Documents/Screenshots), hot corners, Safari dev tools
-- **Server** -- similar but simplified, larger Dock icons
-
-### Homebrew
-
-Two Brewfiles for different machine types:
-
-- **Brewfile.laptop** -- ~177 packages including dev tools, GUI apps, fonts, and media utilities
-- **Brewfile.server** -- ~150 packages focused on headless operation, media server stack (Plex, SABnzbd, Transmission), and monitoring
+- `macos-laptop-defaults.sh`: trackpad, keyboard repeat, Dock (auto-hide, 36px icons), Finder (path and status bars, folders on top), screenshots (JPG to ~/Documents/Screenshots), hot corners, Safari developer tools
+- `macos-server-defaults.sh`: similar but simplified, with larger Dock icons
 
 ## Setup
 
-1. Clone the repository:
-   ```sh
-   git clone <repo-url> ~/.dotfiles
-   ```
+Install chezmoi and initialize from this repository:
 
-2. Symlink configs to their expected locations:
-   ```sh
-   ln -s ~/.dotfiles/mac/zshrc ~/.zshrc
-   ln -s ~/.dotfiles/mac/zprofile ~/.zprofile
-   ln -s ~/.dotfiles/mac/profile ~/.profile
-   ln -s ~/.dotfiles/mac/bashrc ~/.bashrc
-   ln -s ~/.dotfiles/mac/aliases ~/.aliases
-   ln -s ~/.dotfiles/mac/nanorc ~/.nanorc
-   ln -s ~/.dotfiles/vimrc ~/.vimrc
-   ln -s ~/.dotfiles/inputrc ~/.inputrc
-   ln -s ~/.dotfiles/dircolors ~/.dircolors
-   ln -s ~/.dotfiles/starship/starship.toml ~/.config/starship.toml
-   ln -s ~/.dotfiles/mac/ghostty ~/.config/ghostty
-   ```
-   On Linux, use `linux/zshrc` instead of `mac/zshrc`.
+```sh
+chezmoi init <repo-url>
+chezmoi apply
+```
 
-3. Install Homebrew packages:
-   ```sh
-   brew bundle install --file=~/.dotfiles/brewfiles/Brewfile.laptop
-   ```
+On first run, chezmoi will prompt for your name, email address, preferred editor, and Git signing key. These values are stored in `~/.config/chezmoi/chezmoi.toml` and reused on subsequent runs.
 
-4. Apply macOS defaults (optional):
-   ```sh
-   bash ~/.dotfiles/bin/macos-laptop-defaults.sh
-   ```
+Install Homebrew packages (macOS only):
+
+```sh
+brew bundle install --global
+```
+
+Apply macOS system defaults (optional, run once per machine):
+
+```sh
+bash ~/.local/share/chezmoi/bin/macos-laptop-defaults.sh
+# or for a server:
+bash ~/.local/share/chezmoi/bin/macos-server-defaults.sh
+```
+
+## Platform Notes
+
+Linux hosts use `~/.config/zsh/linux.zsh` for platform-specific configuration. The `~/.zprofile`, `~/.zshrc`, Ghostty config, Zed config, and Brewfile are macOS-only and excluded on Linux via `.chezmoiignore`.
 
 ## License
 
-MIT -- see [LICENSE](LICENSE) for details.
+MIT. See [LICENSE](LICENSE) for details.
