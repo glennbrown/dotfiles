@@ -1,13 +1,12 @@
 # ls aliases
 if command -v eza &>/dev/null; then
     alias ls='eza -g --group-directories-first --icons=always'
-    alias ll='eza -l'
-    alias la='eza -lA'
-    alias lr='eza -lrA'
-    alias lt='eza -lTA'
+    alias ll='ls -l'
+    alias la='ls -lA'
+    alias lr='ls -lrA'
+    alias lt='ls -lTA'
 else
     # GNU/BSD/macOS ls
-    alias ls='ls --color=auto'
     alias ll='ls -lh'
     alias la='ls -lAh'
     alias lr='ls -lAhrt'
@@ -20,14 +19,14 @@ alias fgrep='fgrep -F --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
 
 # git
 if command -v git &>/dev/null; then
-    alias gs='git status'
-    alias gc='git commit'
-    alias gp='git pull --rebase'
-    alias gcam='git commit -am'
-    alias gl='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+  alias gs='git status'
+  alias gc='git commit'
+  alias gp='git pull --rebase'
+  alias gcam='git commit -am'
+  alias gl='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
 fi
 
-# bat 
+# bat
 if command -v bat &>/dev/null; then
-    alias cat='bat'
+  alias cat='bat'
 fi
