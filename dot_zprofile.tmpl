@@ -1,0 +1,21 @@
+# Preferred editor
+export EDITOR="{{ .editor }}"
+export VISUAL="${EDITOR}"
+
+# User binaries
+[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
+[ -d "${HOME}/.local/bin" ] && PATH="${HOME}/.local/bin:${PATH}"
+
+# Load Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Homebrew Settings
+HOMEBREW_AUTO_UPDATE_SECS=604800 #Update homebrew once a week
+HOMEBREW_NO_ANALYTICS=1 #Disable homebrew analytics
+
+# Python Fix
+# https://hynek.me/til/rq-macos/
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# Surpress Node Warnings
+export NODE_NO_WARNINGS=1

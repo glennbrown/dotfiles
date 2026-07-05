@@ -1,0 +1,13 @@
+{{- $email := promptStringOnce . "email" "User Email Address" -}}
+{{- $name := promptStringOnce . "name" "User Name" -}}
+{{- $editor := promptStringOnce . "editor" "Default Editor" -}}
+{{- $gitSigningKey := promptStringOnce . "gitSigningKey" "Git Signing Key" -}}
+
+[data]
+  # User
+  email = {{ $email | quote }}
+  name = {{ $name | quote }}
+  editor = {{ $editor | quote }}
+
+  # Git
+  gitSigningKey = {{ $gitSigningKey | quote }}

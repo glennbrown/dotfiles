@@ -1,0 +1,55 @@
+[user]
+  	email = {{ .email }}
+  	name = {{ .name }}
+{{- if ne .gitSigningKey "" }}
+  	signingkey = {{ .gitSigningKey }}
+{{- end }}
+
+[core]
+		excludesfile = {{ .chezmoi.homeDir }}/.gitignore
+		autocrlf = false
+		pager = delta
+
+[gpg]
+		format = ssh
+
+{{ if eq .chezmoi.os "darwin" -}}
+[gpg "ssh"]
+		program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{ end -}}
+
+[commit]
+		gpgsign = true
+
+[filter "lfs"]
+  	clean = git-lfs clean -- %f
+  	smudge = git-lfs smudge -- %f
+  	process = git-lfs filter-process
+  	required = true
+
+[fetch]
+		prune = true
+
+[pull]
+		rebase = false
+
+[init]
+		defaultBranch = main
+
+[push]
+		autoSetupRemote = true
+
+[interactive]
+		diffFilter = delta --color-only
+
+[delta]
+		navigate = true
+		light = false
+		side-by-side = true
+		line-numbers = true
+
+[merge]
+	 conflictstyle = diff3
+
+[diff]
+	 colorMoved = default

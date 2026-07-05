@@ -7,10 +7,6 @@ case $- in
       *) return;;
 esac
 
-# Terminal
-export TERM=xterm-256color
-export DOTFILES_DIR="~/.dotfiles"
-
 # Shell behaviour
 shopt -s autocd # If set, a command name that is the name of a directory is executed as if it were the argument to the cd command.
 shopt -s checkwinsize # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
@@ -39,13 +35,13 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+    xterm*|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-force_color_prompt=yes
+#force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -76,14 +72,14 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias diff='diff --color=auto'
-	alias ip='ip --color=auto'
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+  alias diff='diff --color=auto'
+  alias ip='ip --color=auto'
 
 	export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
 	export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
@@ -98,8 +94,8 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ~/.aliases ]; then
+  . ~/.aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -144,5 +140,16 @@ if [ -x $(command -v zoxide) ]; then
     eval "$(zoxide init bash)"
 fi
 
-# Finishing up
-_dotfiles_update_check
+# Starship Prompt
+# Only run starship when available AND not on a text/serial console
+if command -v starship >/dev/null 2>&1; then
+  case "$(tty)" in
+    /dev/tty[0-9]*|/dev/ttyS*|/dev/ttyAMA*|/dev/hvc*)
+      # On a text/serial console → do nothing
+      ;;
+    *)
+      # All other terminals (pts/ttyUSB/GUI terminals, SSH, etc.)
+      eval "$(starship init zsh)"
+      ;;
+  esac
+fi

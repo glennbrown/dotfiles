@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# VS Code
+.vscode/*
+.history/
+
+# Zed
+.zed/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Claude
+.claude/settings.local.json
+
+# Vim swap files
+.*.sw?

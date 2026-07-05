@@ -6,7 +6,6 @@ set number              " show line numbers
 set showcmd             " show selection metadata
 set showmode            " show INSERT, VISUAL, etc. mode
 set showmatch           " show matching brackets
-set autoindent smartindent  " auto/smart indent
 set smarttab            " better backspace and tab functionality
 set scrolloff=5         " show at least 5 lines above/below
 filetype on             " enable filetype detection
@@ -28,5 +27,7 @@ set visualbell          " but leave on a visual bell
 set hlsearch            " highlighted search results
 set showmatch           " show matching bracket
 
+{{ if eq .chezmoi.os "darwin" }}
 " clipboard
 set clipboard=unnamed   " allow yy, etc. to interact with OS X clipboard
+{{ end }}
