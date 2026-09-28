@@ -84,6 +84,11 @@ if [ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]; then
     FPATH=$HOMEBREW_PREFIX/share/zsh-completions:$FPATH
 fi
 
+# Orbstack
+if [ -f $HOME/.orbstack/shell/init.zsh ]; then
+  source $HOME/.orbstack/shell/init.zsh 2>/dev/null || :
+fi
+
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
