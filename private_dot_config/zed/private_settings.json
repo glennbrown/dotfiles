@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "ssh_connections": [],
   "agent_servers": {
     "claude-acp": {
       "type": "registry",
@@ -88,7 +89,7 @@
     "font_size": 14.0,
   },
   "base_keymap": "VSCode",
-  "buffer_font_family": "Liga SFMono Nerd Font",
+  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
   "icon_theme": "Bearded Icons",
   "ui_font_size": 16,
   "buffer_font_size": 14.0,
