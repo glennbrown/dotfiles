@@ -2,7 +2,7 @@
 keybind = global:cmd+grave_accent=toggle_quick_terminal
 
 # --- Theme ---
-theme = Nord
+theme = root-loops
 window-theme = system
 
 # --- Typography ---
